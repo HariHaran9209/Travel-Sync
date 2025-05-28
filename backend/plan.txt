@@ -1,0 +1,75 @@
+User Modal: {
+  _id: ObjectId,
+  name: String,
+  email: String,
+  password: String, // hashed
+  role: String, // "user" or "admin"
+  createdAt: Date
+}
+
+Packages Modal: {
+  _id: ObjectId,
+  title: String,
+  description: String,
+  destination: String, // e.g., "Goa", "Paris"
+  duration: String, // e.g., "5 days / 4 nights"
+  price: Number,
+  imageUrls: [String],
+  itinerary: [String], // day-by-day schedule
+  inclusions: [String],
+  exclusions: [String],
+  availableDates: [Date],
+  createdBy: ObjectId, // admin user ID
+  createdAt: Date
+}
+
+Bookings Modal: {
+  _id: ObjectId,
+  userId: ObjectId,
+  packageId: ObjectId,
+  travelDate: Date,
+  numberOfPeople: Number,
+  totalPrice: Number,
+  status: String, // "pending", "confirmed", "cancelled"
+  createdAt: Date
+}
+
+Reviews Modal: {
+  _id: ObjectId,
+  userId: ObjectId,
+  packageId: ObjectId,
+  rating: Number, // 1 to 5
+  comment: String,
+  createdAt: Date
+}
+
+Contacts Modal: {
+  _id: ObjectId,
+  name: String,
+  email: String,
+  message: String,
+  createdAt: Date
+}
+
+Body For Place: {
+  "packages": [
+    {
+      "packageId": "642b6f9c1234abcd5678ef90",
+      "packageName": "Goa Beach Trip",
+      "travelDate": "2025-07-01T00:00:00.000Z",
+      "numberOfPeople": 2,
+      "pricePerPerson": 4500
+    }
+  ],
+  "totalAmount": 9000,
+  "contactDetails": {
+    "email": "test@example.com",
+    "phone": "9876543210"
+  },
+  "address": {
+    "street": "123 Street",
+    "city": "Chennai",
+    "state": "TN",
+    "zip": "600001"
+  }
+}

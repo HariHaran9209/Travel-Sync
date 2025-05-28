@@ -1,0 +1,81 @@
+import React, { useState, useContext } from 'react'
+import '../css/LoginPopup.css'
+import { StoreContext } from '../context/StoreContext'
+import axios from 'axios'
+import cross_icon from '../assets/cross_icon.png'
+import { toast } from 'react-toastify'
+
+const LoginPopup = ({setShowLogin}) => {
+    
+	const { url, setToken } = useContext(StoreContext)
+
+	const [ currState, setCurrState ] = useState(('Login'))
+	const [ data, setData ] = useState({
+		username: "",
+		email: "",
+		password: "",
+		confirmPassword: ""
+	})
+
+	const onChangeHandler = (event) => {
+		const name = event.target.name
+		const value = event.target.value
+		setData(data => ({...data, [name]:value}))
+	}
+
+	const onLogin = async (event) => {
+		event.preventDefault()
+		let newUrl = url
+		if (currState === 'Login') {
+			newUrl += '/api/user/login'
+		} else {
+			newUrl += '/api/user/register'
+		}
+
+		try {
+			const response = await axios.post(newUrl, data)
+
+			if (response.data.success) {
+				setToken(response.data.token)
+				localStorage.setItem('token', response.data.token)
+				setShowLogin(false)
+				toast.success(response.data.message)
+			} else {
+				// This rarely triggers unless backend returns 200 with success: false
+				console.log(`Received Message: ${response.data.message}`)
+				toast.error(response.data.message || "Something went wrong")
+			}
+		} catch (err) {
+			console.log("Error Message:", err.response?.data?.message || err.message)
+			toast.error(err.response?.data?.message || "Server error")
+		}
+	}
+
+  return (
+   <div className="login-popup">
+			<form onSubmit={onLogin} className="login-popup-container">
+				<div className="login-popup-title">
+					<h2>{currState}</h2>
+					<img src={cross_icon} onClick={() => setShowLogin(false)} alt="" className="close-btn" />
+			</div>
+			<div className="login-popup-inputs">
+				{currState==='Login'?<></>:<input name='username' type='text' onChange={onChangeHandler} value={data.username} placeholder='Your username' required />}
+				<input name='email' type='email' onChange={onChangeHandler} value={data.email} placeholder='Your email' required />
+				<input name='password' type='password' onChange={onChangeHandler} value={data.password} placeholder='Your password' required />
+				<input name='confirmPassword' type='password' onChange={onChangeHandler} value={data.confirmPassword} placeholder='Confirm password' required />
+			</div>
+			<button type='submit'>{currState==='Register'?"Create Account":"Login"}</button>
+			<div className="login-popup-condition">
+				<input type="checkbox" required/>
+				<p>By continuing, i agree to the terms of use & privacy policy</p>
+			</div>
+			{currState === 'Login'
+			? <p>Create a new account? <span onClick={() => setCurrState('Register')}>Click here</span></p>
+			: <p>Already have an account? <span onClick={() => setCurrState('Login')}>Login here</span></p>
+			}
+			</form>
+	 </div> 
+  )
+}
+
+export default LoginPopup

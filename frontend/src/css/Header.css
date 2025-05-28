@@ -1,0 +1,65 @@
+.header {
+	height: 34vw;
+	margin: 30px auto;
+	background: url('https://images.unsplash.com/photo-1617581629397-a72507c3de9e?q=80&w=1472&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat;
+	background-size: cover;
+    border-radius: 25px;
+	position: relative;
+}
+
+.header-contents{
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+	gap: 1.5vw;
+	max-width: 50%;
+	bottom: 10%;
+	left: 6vw;
+    animation: fadeIn 3s;
+}
+
+.header-contents h2{
+	font-weight: 500;
+	color: white;
+	font-size: max(3.8vw, 12px);
+}
+
+.header-contents p {
+	color: white;
+	font-size: 1vw;
+}
+
+.header-contents button{
+	border: none;
+	color: #747474;
+	font-weight: 500;
+	padding: 1vw 2.3vw;
+	background-color: white;
+	font-size: max(1vw, 13px);
+	cursor: pointer;
+	border-radius: 50px;
+	transition: 0.5s all;
+}
+
+.header-contents button:hover {
+  background-color: #f0f0f0;
+}
+
+@media (max-width: 1050px) {
+	.header-content {
+		max-width: 45%;
+	}
+}
+
+@media (max-width: 750px) {
+	.header-contents {
+		max-width: 55%;
+	}
+	.header-contents p {
+		display: none;
+	}
+	.header-contents button {
+		padding: 2vw 4vw;
+	}
+}
